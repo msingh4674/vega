@@ -84,7 +84,7 @@ ved.init = function() {
   var ren = d3.select("#sel_render");
   ren.on("change", ved.renderer)
   ren.selectAll("option")
-    .data(["Canvas", "SVG"])
+    .data(["SVG", "Canvas"])
    .enter().append("option")
     .attr("value", function(d) { return d.toLowerCase(); })
     .text(function(d) { return d; });
