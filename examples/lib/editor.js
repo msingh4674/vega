@@ -73,17 +73,29 @@ ved.parse = function() {
 };
 
 transitionOver = function(event, item) {
-console.log((item._svg.parentNode).childNodes[0]);  
-  d3.select((item._svg.parentNode).childNodes[0])
+    d3.select(item._svg)
 	.transition()
 	.duration(200)
 	.style("fill", "black");
+    d3.select((item._svg).parentNode)
+	.append("text")
+	.attr("x", (item.x))
+	.attr("y", (item.y - 12))
+	.attr("dy", ".9em")
+	.attr("width", 20).attr("height",20)
+	.style("fill", "black")
+	.attr("class","label")
+	.text(item.datum.data.y);
+    console.log(item.datum.data.y);
 }
 transitionOut = function(event, item) {
-      d3.select((item._svg.parentNode).childNodes[0])
+      d3.select(item._svg)
 	.transition()
 	.duration(200)
 	.style("fill", item.fill);
+    d3.select((item._svg).parentNode)
+	.select(".label")
+	.remove();
 }
 
 d3click = function(event, item) {
