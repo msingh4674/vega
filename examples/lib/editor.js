@@ -58,11 +58,42 @@ ved.parse = function() {
     var view = chart({
       el: "#vis",
       data: ved.data,
-      renderer: ved.renderType
+      renderer: ved.renderType,
+      hover: false
     });
-    (ved.view = view).update();
+      (ved.view = view).update({"duration":500})
+      .on("click", d3click )
+      .on("mouseover", transitionOver)
+      .on("mouseout" , transitionOut )
+// These are the default by "hover: true" in the constructor
+//      .on("mouseover", function(event, item) { view.update({props: "hover", items: item, duration: 200}) } )
+//      .on("mouseout" , function(event, item) { view.update({props: "update", items: item, duration: 200}) } )
+;
   });
 };
+
+transitionOver = function(event, item) {
+console.log((item._svg.parentNode).childNodes[0]);  
+  d3.select((item._svg.parentNode).childNodes[0])
+	.transition()
+	.duration(200)
+	.style("fill", "black");
+}
+transitionOut = function(event, item) {
+      d3.select((item._svg.parentNode).childNodes[0])
+	.transition()
+	.duration(200)
+	.style("fill", item.fill);
+}
+
+d3click = function(event, item) {
+    console.log(item);
+    d3.select(item._svg)
+	.transition()
+	.duration(500)
+	.style("fill", "black");
+}
+
 
 ved.resize = function(event) {
   var h = window.innerHeight - 30;
@@ -84,7 +115,7 @@ ved.init = function() {
   var ren = d3.select("#sel_render");
   ren.on("change", ved.renderer)
   ren.selectAll("option")
-    .data(["Canvas", "SVG"])
+    .data(["SVG", "Canvas"])
    .enter().append("option")
     .attr("value", function(d) { return d.toLowerCase(); })
     .text(function(d) { return d; });
