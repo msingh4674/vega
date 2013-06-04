@@ -75,15 +75,20 @@ ved.parse = function() {
 transitionOver = function(event, item) {
     d3.select(item._svg)
 	.transition()
-	.duration(200)
-	.style("fill", "black");
+	.duration(100)
+	.style("fill", "#1accff");
     d3.select((item._svg).parentNode)
 	.append("text")
-	.attr("x", (item.x))
+	.attr("x", (item.x +3))
 	.attr("y", (item.y - 12))
 	.attr("dy", ".9em")
 	.attr("width", 20).attr("height",20)
-	.style("fill", "black")
+	.style("fill", "#1b2122")
+	.style("font-family", 
+	       "HelveticaNeue-MediumCond", 
+	       "Helvetica Neue")
+	.style("font-weight", "600")
+	.style("font-size", "11px")
 	.attr("class","label")
 	.text(item.datum.data.y);
     console.log(item.datum.data.y);
