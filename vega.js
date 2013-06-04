@@ -2004,6 +2004,7 @@ var vg_gradient_id = 0;vg.canvas = {};vg.canvas.path = (function() {
     
     this.textContent = o.text;
     this.style.setProperty("font", fontString(o), null);
+    //console.log('text method', this);
   }
   
   function group(o) {
@@ -2019,38 +2020,104 @@ var vg_gradient_id = 0;vg.canvas = {};vg.canvas.path = (function() {
     this.setAttribute("height", h);
   }
 
+  /**
+   *
+   * @param {string} tag
+   * @param {function} attr A function which adds attributes to a node
+   * @param {boolean} nest ???
+   */
   function draw(tag, attr, nest) {
+    /**
+     * @param {?} g
+     * @param {object} scene Scene item?
+     * @param {int} index The index of the item being drawn
+     */
     return function(g, scene, index) {
+    /*
+      console.log('draw method-----------------');
+      console.log('g', g);
+      console.log('scene', scene);
+      console.log('index', index);
+      console.log('tag', tag);
+      console.log('attr', attr);
+      console.log('nest', nest);
+      console.log('-----------------draw method');
+    */
       drawMark(g, scene, index, "mark_", tag, attr, nest);
     };
   }
   
   function drawMark(g, scene, index, prefix, tag, attr, nest) {
-    var data = nest ? [scene.items] : scene.items,
-        evts = scene.interactive===false ? "none" : null,
-        grps = g.node().childNodes,
-        notG = (tag !== "g"),
-        p = (p = grps[index+1]) // +1 to skip group background rect
-          ? d3.select(p)
-          : g.append("g").attr("id", "g"+(++mark_id));
+    var data,
+        evts,
+        grps,
+        notG,
+        p;
 
+    // Set the data to be the scene items
+    // if the mark is nested make it a one element array
+    // scene.items is an array of items of ???
+    data = nest ? [scene.items] : scene.items;
+
+    // Set a flag to say whether or not events should be enabled
+    // The "none" string means no pointer events, null means default pointer
+    // events
+    evts = scene.interactive===false ? "none" : null;
+
+    // Get a handle to the groups child nodes
+    grps = g.node().childNodes;
+
+    // Set a flag to say whether or not the thing being drawn is not a group
+    notG = (tag !== "g");
+
+    // If there's an element in the second position in the grps array
+    // select it
+    // otherwise append a new group
+    // Set "p" to be the result of the select/append
+    p = (p = grps[index+1]) // +1 to skip group background rect
+      ? d3.select(p)
+      : g.append("g").attr("id", "g"+(++mark_id));
+
+    // Create a selector for all tags of type "tag" that are direct decendencts
+    // of the previously selected "p" attribute
+    // Select it and set the data
+    // Enter the data and then append the tag
     var id = "#" + p.attr("id"),
+        // s is a selector
         s = id + " > " + tag,
+        // m is the d3 selection with the data "attached"
         m = p.selectAll(s).data(data),
+        // e is the result of creating the entering selection and then calling
+        // append to create nodes of type "tag"
         e = m.enter().append(tag);
 
     if (notG) {
+      // Set pointer events to null, ie the default behaviour
       p.style("pointer-events", evts);
-      e.each(function(d) { (d.mark ? d : d[0])._svg = this; });
+
+      // For each node in the current selection
+      // "d" is the current datum
+      e.each(function(d) {
+          // Add a reference to "this" under the _svg property
+          (d.mark ? d : d[0])._svg = this;
+      });
     } else {
       e.append("rect").attr("class","background").style("pointer-events",evts);
     }
-    
+
+    // ???
     m.exit().remove();
+
+    // Calls the attr function on each of the selected elements, adding the
+    // appropriate element attributes
     m.each(attr);
+
+    // If the element is not a tag, call the style function on each of the
+    // selected elements
     if (notG) m.each(style);
     else p.selectAll(s+" > rect.background").each(group_bg).each(style);
     
+    console.log(p);
     return p;
   }
 
@@ -2117,7 +2184,8 @@ var vg_gradient_id = 0;vg.canvas = {};vg.canvas.path = (function() {
     }
   };
   
-})();vg.svg.Renderer = (function() {  
+})();
+vg.svg.Renderer = (function() {  
   var renderer = function() {
     this._svg = null;
     this._ctx = null;
@@ -4841,7 +4909,7 @@ function vg_axisTicks() {
 function vg_axisTickLabels() {
   return {
     type: "text",
-    interactive: false,
+    interactive: true,
     key: "data",
     properties: {
       enter: {
@@ -4860,7 +4928,7 @@ function vg_axisTickLabels() {
 function vg_axisTitle() {
   return {
     type: "text",
-    interactive: false,
+    interactive: true,
     properties: {
       enter: {
         font: {value: vg.config.axis.titleFont},
@@ -4890,7 +4958,8 @@ function vg_axisDomain() {
       update: {}
     }
   };
-}vg.scene.legend = function() {
+}
+vg.scene.legend = function() {
   var size = null,
       shape = null,
       fill = null,
