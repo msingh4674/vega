@@ -61,7 +61,7 @@ ved.parse = function() {
       renderer: ved.renderType,
       hover: false
     });
-      (ved.view = view).update({"duration":500})
+      (ved.view = view).update()
       .on("click", d3click )
       .on("mouseover", transitionOver)
       .on("mouseout" , transitionOut )
@@ -73,34 +73,17 @@ ved.parse = function() {
 };
 
 transitionOver = function(event, item) {
+console.log(item);
     d3.select(item._svg)
 	.transition()
 	.duration(100)
 	.style("fill", "#1accff");
-    d3.select((item._svg).parentNode)
-	.append("text")
-	.attr("x", (item.x +3))
-	.attr("y", (item.y - 12))
-	.attr("dy", ".9em")
-	.attr("width", 20).attr("height",20)
-	.style("fill", "#1b2122")
-	.style("font-family", 
-	       "HelveticaNeue-MediumCond", 
-	       "Helvetica Neue")
-	.style("font-weight", "600")
-	.style("font-size", "11px")
-	.attr("class","label")
-	.text(item.datum.data.y);
-    console.log(item.datum.data.y);
 }
 transitionOut = function(event, item) {
       d3.select(item._svg)
 	.transition()
 	.duration(200)
 	.style("fill", item.fill);
-    d3.select((item._svg).parentNode)
-	.select(".label")
-	.remove();
 }
 
 d3click = function(event, item) {

@@ -49,7 +49,7 @@
           "y2": {"scale": "y", "value": 0}
         },
         "update": {
-          "fill": {"value": "steelblue"}
+          "fill": {"value": "rgb(222,138,101)"}
         },
         "hover": {
           "fill": {"value": "red"}
