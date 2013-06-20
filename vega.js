@@ -4372,7 +4372,6 @@ vg.scene.item = function(mark) {
         (list || (list=[])).push(interp);
       }
     }
-
     if (interp) {
       list.item = item;
       list.ease = item.mark.ease || this.ease;
@@ -4802,23 +4801,27 @@ function vg_axisDomainExtend(orient, domain, range, size) {
 }
 
 function vg_axisUpdate(item, group, trans) {
-  var o = trans ? {} : item,
-      offset = item.mark.def.offset,
-      orient = item.mark.def.orient,
-      width  = group.width,
-      height = group.height; // TODO fallback to global w,h?
-
-  item.width = width;
-  item.height = height;
-
-  switch(orient) {
+    var o = trans ? {} : item,
+    offset = item.mark.def.offset,
+    orient = item.mark.def.orient,
+    width  = group.width,
+    height = group.height; // TODO fallback to global w,h?
+    console.log(item);
+    item.width = width;
+    item.height = height;
+    
+    switch(orient) {
     case "left":   { o.x = -offset; o.y = 0; break; }
     case "right":  { o.x = width + offset; o.y = 0; break; }
     case "bottom": { o.x = 0; o.y = height + offset; break; }
     case "top":    { o.x = 0; o.y = -offset; break; }
     default:       { o.x = 0; o.y = 0; }
-  }
-  if (trans) trans.interpolate(item, o);
+    }
+    if (trans) {
+	trans.interpolate(item, o);
+	console.log("interpolated:")
+	console.log(trans.interpolate(item, o))
+    }
 }
 
 function vg_axisTicks() {

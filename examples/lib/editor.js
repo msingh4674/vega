@@ -61,7 +61,9 @@ ved.parse = function() {
       renderer: ved.renderType,
       hover: false
     });
-      (ved.view = view).update()
+      (ved.view = view)
+      //.update({duration:200})
+      .update()
       .on("click", d3click )
       .on("mouseover", transitionOver)
       .on("mouseout" , transitionOut )

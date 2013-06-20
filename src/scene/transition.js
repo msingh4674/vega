@@ -19,7 +19,6 @@ vg.scene.Transition = (function() {
         (list || (list=[])).push(interp);
       }
     }
-
     if (interp) {
       list.item = item;
       list.ease = item.mark.ease || this.ease;
