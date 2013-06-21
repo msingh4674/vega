@@ -6,6 +6,7 @@ var SPECS = [
   "choropleth",
   "error",
   "force",
+  "histogram",
   "image",
   "lifelines",
   "map",
