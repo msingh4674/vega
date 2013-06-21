@@ -1,0 +1,336 @@
+{
+  "width": 218,
+  "height": 200,
+  "padding": {
+    "top": 0,
+    "bottom": 20,
+    "left": 0,
+    "right": 20
+  },
+  "data": [
+    {
+      "name": "histogram",
+      "values": [
+        {
+          "value": 8,
+          "bins": [
+            10,
+            20
+          ],
+          "at": 15
+        },
+        {
+          "value": 66,
+          "bins": [
+            20,
+            30
+          ],
+          "at": 25
+        },
+        {
+          "value": 116,
+          "bins": [
+            30,
+            40
+          ],
+          "at": 35
+        },
+        {
+          "value": 196,
+          "bins": [
+            40,
+            50
+          ],
+          "at": 45
+        },
+        {
+          "value": 217,
+          "bins": [
+            50,
+            60
+          ],
+          "at": 55
+        },
+        {
+          "value": 189,
+          "bins": [
+            60,
+            70
+          ],
+          "at": 65
+        },
+        {
+          "value": 113,
+          "bins": [
+            70,
+            80
+          ],
+          "at": 75
+        },
+        {
+          "value": 63,
+          "bins": [
+            80,
+            90
+          ],
+          "at": 85
+        },
+        {
+          "value": 26,
+          "bins": [
+            90,
+            100
+          ],
+          "at": 95
+        },
+        {
+          "value": 6,
+          "bins": [
+            100,
+            110
+          ],
+          "at": 105
+        }
+      ]
+    },
+    {
+      "name": "median",
+      "values": [
+        56
+      ]
+    },
+    {
+      "name": "min",
+      "values": [
+        18
+      ]
+    },
+    {
+      "name": "max",
+      "values": [
+        108
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "linear",
+      "range": "height",
+      "domain": {
+        "data": "histogram",
+        "field": "data.value"
+      }
+    },
+    {
+      "name": "x",
+      "type": "linear",
+      "nice": true,
+      "clamp": true,
+      "range": "width",
+      "zero": false,
+      "domain": {
+        "data": "histogram",
+        "field": [
+          "data.bins.0",
+          "data.bins.1"
+        ]
+      }
+    },
+    {
+      "name": "width",
+      "type": "linear",
+      "nice": true,
+      "clamp": true,
+      "range": "width",
+      "domain": [
+        0,
+        1
+      ],
+      "zero": false
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {
+        "data": "histogram"
+      },
+      "properties": {
+        "enter": {
+          "x": {
+            "scale": "x",
+            "field": "data.bins.0"
+          },
+          "y": {
+            "scale": "y",
+            "value": 0
+          },
+          "x2": {
+            "scale": "x",
+            "field": "data.bins.1"
+          },
+          "y2": {
+            "scale": "y",
+            "field": "data.value"
+          }
+        },
+        "update": {
+          "fill": {
+            "value": "#98df8a"
+          },
+          "fillOpacity": {
+            "value": 1
+          }
+        }
+      }
+    },
+    {
+      "type": "group",
+      "name": "stats",
+      "properties": {
+        "enter": {
+          "y": {
+            "value": 0,
+            "offset": 10
+          },
+          "x": {
+            "value": 0,
+            "offset": 0
+          }
+        }
+      },
+      "marks": [
+        {
+          "type": "text",
+          "from": {
+            "data": "min"
+          },
+          "properties": {
+            "enter": {
+              "x": {
+                "scale": "width",
+                "value": 0
+              },
+              "y": {
+                "scale": "y",
+                "value": 0
+              },
+              "text": {
+                "field": "data"
+              },
+              "align": {
+                "value": "left"
+              }
+            },
+            "update": {
+              "fill": {
+                "value": "#000"
+              },
+              "fillOpacity": {
+                "value": 1
+              }
+            }
+          }
+        },
+        {
+          "type": "text",
+          "from": {
+            "data": "max"
+          },
+          "properties": {
+            "enter": {
+              "x": {
+                "scale": "width",
+                "value": 1
+              },
+              "y": {
+                "scale": "y",
+                "value": 0
+              },
+              "text": {
+                "field": "data"
+              },
+              "align": {
+                "value": "right"
+              }
+            },
+            "update": {
+              "fill": {
+                "value": "#000"
+              },
+              "fillOpacity": {
+                "value": 1
+              }
+            }
+          }
+        },
+        {
+          "type": "text",
+          "from": {
+            "data": "median"
+          },
+          "properties": {
+            "enter": {
+              "x": {
+                "scale": "x",
+                "field": "data"
+              },
+              "y": {
+                "scale": "y",
+                "value": 0
+              },
+              "text": {
+                "field": "data"
+              },
+              "align": {
+                "value": "center"
+              }
+            },
+            "update": {
+              "fill": {
+                "value": "#000"
+              },
+              "fillOpacity": {
+                "value": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "ticks": 0,
+      "tickSizeEnd": 0
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "grid": true,
+      "layer": "back",
+      "ticks": 2,
+      "properties": {
+        "axis": {
+          "strokeWidth": {
+            "value": 0
+          }
+        },
+        "labels": {
+          "fillOpacity": {
+            "value": 0
+          }
+        },
+        "ticks": {
+          "strokeWidth": {
+            "value": 0
+          }
+        }
+      }
+    }
+  ]
+}
