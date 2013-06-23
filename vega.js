@@ -2009,6 +2009,7 @@ var vg_gradient_id = 0;vg.canvas = {};vg.canvas.path = (function() {
   function group(o) {
     var x = o.x || 0,
         y = o.y || 0;
+      console.log(x,y)
     this.setAttribute("transform", "translate("+x+","+y+")");
   }
 
@@ -2117,7 +2118,8 @@ var vg_gradient_id = 0;vg.canvas = {};vg.canvas.path = (function() {
     }
   };
   
-})();vg.svg.Renderer = (function() {  
+})();
+vg.svg.Renderer = (function() {  
   var renderer = function() {
     this._svg = null;
     this._ctx = null;
@@ -4430,7 +4432,7 @@ vg.scene.transition = function(dur, ease) {
 };vg.scene.axis = function() {
   var scale,
       orient = vg.config.axis.orient,
-      offset = 0,
+      offset = 0, x=0, y=0,
       titleOffset = vg.config.axis.titleOffset,
       axisDef = null,
       layer = "front",
@@ -4520,9 +4522,9 @@ vg.scene.transition = function(dur, ease) {
 
     var marks = [gridLines, majorTicks, minorTicks, tickLabels, domain, title];
     return {
-      type: "group",
+      type: "group", 
       interactive: false,
-      properties: { update: vg_axisUpdate },
+      properties: { enter: {x:{scale: scale.scaleName, value:0}, y:{scale: scale.scaleName, value:0}}, update: vg_axisUpdate },
       marks: marks.map(vg.parse.mark)
     };
   }
@@ -4797,7 +4799,7 @@ function vg_axisDomainExtend(orient, domain, range, size) {
   } else {
     path = "M" + size + "," + range[0] + "H0V" + range[1] + "H" + size;
   }
-  domain.properties.update.path = {value: path};
+    domain.properties.update.path = {value: path};
 }
 
 function vg_axisUpdate(item, group, trans) {
@@ -4893,7 +4895,8 @@ function vg_axisDomain() {
       update: {}
     }
   };
-}vg.scene.legend = function() {
+}
+vg.scene.legend = function() {
   var size = null,
       shape = null,
       fill = null,

@@ -157,6 +157,7 @@ vg.svg.marks = (function() {
   function group(o) {
     var x = o.x || 0,
         y = o.y || 0;
+      console.log(x,y)
     this.setAttribute("transform", "translate("+x+","+y+")");
   }
 
